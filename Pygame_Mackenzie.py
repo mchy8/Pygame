@@ -37,6 +37,13 @@ class Meatball(Sprite):
 		randY = randint(450, 0)
 		self.rect.center = (randX, randY)
 
+class Spaghetti(Sprite):
+	def __init__(self):
+		Sprite.__init__(self)
+		self.image = image.load()
+
+		
+
 init()
 
 meatballs = Meatball()
