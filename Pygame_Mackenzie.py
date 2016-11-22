@@ -1,4 +1,6 @@
 #required 
+from pygame import *
+from pygame.sprite import *
 import pygame
 pygame.init();
 
@@ -14,20 +16,38 @@ x_delta = 0
 y_delta = 0
 clock = pygame.time.Clock()
 
-
 #create a surface
 gameDisplay = pygame.display.set_mode((800,600)) #initialize with a tuple
 
 #lets add a title, aka "caption"
-pygame.display.set_caption("CLoudy with a Chance of Meatballs")
+pygame.display.set_caption("Cloudy with a Chance of Meatballs")
 
 #pygame.display.flip() 		#similar to a flip book, updates entire surface
 pygame.display.update()		#only updates portion specified
 
+class Meatball(Sprite):
+	def __init__(self):
+		Sprite.__init__(self)
+		self.image = image.load("meatball.bmp").convert()
+		self.rect = self.image.get_rect()
+
+
+	def move(self):
+		randX= randint(0, 300)
+		randY = randint(450, 0)
+		self.rect.center = (randX, randY)
+
+init()
+
+meatballs = Meatball()
+sprites = RenderPlain(meatballs)
+# def hit(self,target):
+# 	return self.rect.colliderect(target)
+#this is when it collides
 
 gameExit = False
 while not gameExit:
-	gameDisplay.fill(black)
+	gameDisplay.fill(white)
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -44,22 +64,31 @@ while not gameExit:
 			y_delta -= 10
 		if event.key == pygame.K_DOWN:
 			y_delta += 10
+		# if event.key == pygame.K_LCTRL:
+
 	
 	x_pos +=x_delta
 	y_pos +=y_delta
-	gameDisplay.fill(red, rect=[x_pos,y_pos, 40,40])
-	pygame.display.update()		
-	clock.tick(30)
+	# gameDisplay.fill(black)
+	# pygame.display.update()		
+	# clock.tick(30)
 
+	sprites.update()
+	sprites.draw(gameDisplay)
+	display.update()
+#render is for words
+# class meatballs(pygame.sprite.Sprite):
+# 	def _init_(self, x, y)
 
-gameDisplay.fill(white)
-pygame.display.update()	
+# gameDisplay.fill(black)
+# pygame.display.update()	
 
-# gameExit = False
-# while not gameExit:
-# 	for event in pygame.event.get():
-# 		if event.type == pygame.QUIT:
-# 			gameExit = True
+#sounds
+# elif e.type == MOUSEBOTTONDOWN:
+# 	if shovel.hit(gold):
+# 		mixer.sound("yada").play()
+# 		gold.move()
+# 		hits += 1
 
 
 #required
