@@ -40,7 +40,13 @@ class Meatball(Sprite):
 class Spaghetti(Sprite):
 	def __init__(self):
 		Sprite.__init__(self)
-		self.image = image.load()
+		self.image = image.load("Spaghetti.jpg").convert()
+		self.rect= self.image.get_rect()
+
+	def move(self):
+		randiX= randint(600, 500)
+		randiY = randint(0,500)
+		self.rect.center = (randiX, randiY)
 
 		
 
