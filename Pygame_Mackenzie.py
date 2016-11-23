@@ -60,6 +60,7 @@ class Spaghetti(Sprite):
 		randiY = randint(0,500)
 		self.rect.center = (randiX, randiY)
 
+pygame.display.update()		#only updates portion specified
 		
 
 init()
