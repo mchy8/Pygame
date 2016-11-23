@@ -2,13 +2,24 @@
 from pygame import *
 from pygame.sprite import *
 import pygame
+import random
 pygame.init();
+
+WIDTH = 800
+HEIGHT = 800
 
 white = (255,255,255)
 black = (0,0,0)
 red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
+
+x_pos = 0
+y_pos = 200
+bg_x = 0
+bg_y = -200
+poop_x = random.randrange(0, WIDTH) 
+poop_y = random.randrange(200, HEIGHT) 
 
 x_pos = 0
 y_pos = 0
@@ -31,11 +42,12 @@ class Meatball(Sprite):
 		self.image = image.load("meatball.bmp").convert()
 		self.rect = self.image.get_rect()
 
+meatballs1 = image.load("meatball.bmp").convert()
 
-	def move(self):
-		randX= randint(0, 300)
-		randY = randint(450, 0)
-		self.rect.center = (randX, randY)
+	# def move(self):
+	# 	randX= randint(0, 300)
+	# 	randY = randint(450, 0)
+	# 	self.rect.center = (randX, randY)
 
 class Spaghetti(Sprite):
 	def __init__(self):
@@ -82,6 +94,7 @@ while not gameExit:
 	
 	x_pos +=x_delta
 	y_pos +=y_delta
+	gameDisplay.blit(meatballs1,(x_pos,y_pos))
 	# gameDisplay.fill(black)
 	# pygame.display.update()		
 	# clock.tick(30)
@@ -104,6 +117,20 @@ while not gameExit:
 # 		hits += 1
 
 
+	if x_pos>=WIDTH:
+		poop_x = random.randrange(0, WIDTH) 
+		poop_y = random.randrange(200, HEIGHT) 
+		x_pos = 0
+		if bg_x == 0:
+			bg_x -=200
+		else:
+			bg_x = 0
+	pygame.display.update()		
+
 #required
 pygame.quit()
 quit()				#exits python
+
+#CURRENT ISSUES
+#1) HOW TO NOT GO OFF SCREEN
+#2) HOW TO ONLY HAVE ONE MEATBALL 
