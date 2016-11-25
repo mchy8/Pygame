@@ -16,23 +16,27 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
 
-x_pos = 0
-y_pos = 200
-bg_x = 0
-bg_y = -200
-poop_x = random.randrange(0, WIDTH) 
-poop_y = random.randrange(200, HEIGHT) 
+# x_pos = 0
+# y_pos = 200
+# bg_x = 0
+# bg_y = -200
+# poop_x = random.randrange(0, WIDTH) 
+# poop_y = random.randrange(200, HEIGHT) 
 
 x_pos = 0
 y_pos = 0
-x_delta = 0
-y_delta = 0
+# x_delta = 0
+# y_delta = 0
 clock = pygame.time.Clock()
 
 meatballspeed = 10
 maxmeatballs = 5
 spaghettispeed = 10
 maxspaghettis = 5
+score = 0
+maxscore = 500 
+meatballScore = 5
+spaghettiScore = 10
 #create a surface
 gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
 
@@ -40,7 +44,7 @@ gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
 display.set_caption("Cloudy with a Chance of Meatballs")
 
 #pygame.display.flip() 		#similar to a flip book, updates entire surface
-pygame.display.update()		#only updates portion specified
+# pygame.display.update()		#only updates portion specified
 
 class Meatball(Sprite):
 	def __init__(self):
@@ -48,12 +52,20 @@ class Meatball(Sprite):
 		self.image = image.load("meatball.bmp").convert()
 		self.rect = self.image.get_rect()
 
-	def update(self):
-		self.rect.y += meatballspeed
-		if self.rect.y > screen_height:
+	def update(self, action):
+		if action == "move down":
+			self.rect.y += meatballspeed
+			if self.rect.y > screen_height:
+				self.rect.x = random.randint(1,WIDTH -20)
+				self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+		elif action == "gotToTop":
 			self.rect.x = random.randint(1,WIDTH -20)
-			self.rect.y = 100
 			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+
+
+	def gotToTop(self):
+		self.rect.x = random.randint(1,WIDTH -20)
+		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
 
 class Spaghetti(Sprite):
 	def __init__(self):
@@ -61,12 +73,19 @@ class Spaghetti(Sprite):
 		self.image = image.load("spaghetti.bmp").convert()
 		self.rect = self.image.get_rect()
 
-	def update(self):
-		self.rect.y += spaghettispeed
-		if self.rect.y > screen_height:
+	def update(self, action):
+		if action == "move down":
+			self.rect.y += spaghettispeed
+			if self.rect.y > screen_height:
+				self.rect.x = random.randint(1,WIDTH -20)
+				self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+		elif action == "gotToTop":
 			self.rect.x = random.randint(1,WIDTH -20)
-			self.rect.y = 100
 			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+
+	def gotToTop(self):
+		self.rect.x = random.randint(1,WIDTH -20)
+		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
 
 meatballArray = []
 for i in range(0, maxmeatballs-1):
@@ -79,102 +98,78 @@ spaghettiArray = []
 for i in range(0, maxspaghettis-1):
 	spaghettiArray.append(Spaghetti())
 spaghettiSprites = []
-for x in  range(0, (len(spaghettiArray)-1)):
+for x in range(0, (len(spaghettiArray)-1)):
 	spaghettiSprites.append(RenderPlain(spaghettiArray[x]))
 
 class Bowl(Sprite):
-    def __init__(self):
-    	Sprite.__init__(self)
-    	self.image = image.load("bowl.bmp").convert()
+	def __init__(self):
+		Sprite.__init__(self)
+		self.image = image.load("bowl.bmp").convert()
 		self.rect = self.image.get_rect()
+		self.rect.y = 450
+		self
 
-	def move(ammount):
-		self.x += ammount
-		self.y 
+	def update(self):
+		self.rect.x = x_pos
+		self.rect.y = 450
 
-        
-# block = Meatball([20, 20])
+	# def hit(self,target):
+	# 	return self.rect.colliderect(target)
 
-# meatballs1 = image.load("meatball.bmp").convert()
-	# def move(self):
-	# 	randX = randint(0, 600)
 
-	# 	randY = randint(0, 400)
-	# 	self.rect.center = (randX,randY)
+# bowlthing=RenderPlain(Bowl)
+bowl1 = Bowl()
 
-# class Spaghetti(Sprite):
-# 	def __init__(self):
-# 		Sprite.__init__(self)
-# 		self.image = image.load("Spaghetti.bmp").convert()
-# 		self.rect= self.image.get_rect()
-
-# 	def move(self):
-# 		randiX= randint(600, 500)
-# 		randiY = randint(0,500)
-# 		self.rect.center = (randiX, randiY)
-
-# pygame.display.update()		#only updates portion specified
-		
+bowlthing= RenderPlain(bowl1)
 
 init()
 
-
-
-# spaghetti1 = Spaghetti()
-# meatballs1 = Meatball([20,20])
-# sprites = RenderPlain(meatballs1)
-def hit(self,target):
-	return self.rect.colliderect(target)
-#this is when it collides
-
+gameDisplay.fill(white)
 gameExit = False
 while not gameExit:
-	gameDisplay.fill(white)
-
+	# bowlthing()
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			gameExit = True
-
-
 	if event.type == pygame.KEYDOWN:
-		x_delta=0;
-		y_delta=0;
+		# x_pos=;
+		y_pos= 450;
 		if event.key == pygame.K_LEFT:
-			x_delta -= 10
+			x_pos -= 10
+			# bowlthing.move(-10)
 		if event.key == pygame.K_RIGHT:
-			x_delta += 10
+			x_pos += 10
+			# bowlthing.move(10)
 		# if event.key == pygame.K_UP:
 		# 	y_delta -= 10
 		# if event.key == pygame.K_DOWN:
 		# 	y_delta += 10
 		# if event.key == pygame.K_LCTRL:
-
-
-	
-	x_pos +=x_delta
-	y_pos +=y_delta
-	if x_pos>=WIDTH:
-		poop_x = random.randrange(0, WIDTH) 
-		poop_y = random.randrange(200, HEIGHT) 
-		x_pos = 0
-		if bg_x == 0:
-			bg_x -=200
-		else:
-			bg_x = 0
-	pygame.display.update()	
-
+	scoreFont = font.Font(None, 25)
+	scoreText = scoreFont.render("Score: "+str(score), False, (0,0,0))
+	gameDisplay.blit(scoreText, (320, 0))
+	# pygame.display.update()	
 	for i in range(0,len(meatballSprites) -1):
-		# meatballArray[i].update()
-		# meatballArray[i].draw(gameDisplay)
-		meatballSprites[i].update()
+		meatballSprites[i].update("move down")
 		meatballSprites[i].draw(gameDisplay)
 		display.update()
 	for i in range(0,len(spaghettiSprites) -1):
 		# meatballArray[i].update()
 		# meatballArray[i].draw(gameDisplay)
-		spaghettiSprites[i].update()
+		spaghettiSprites[i].update("move down")
 		spaghettiSprites[i].draw(gameDisplay)
 		display.update()
+	bowlthing.update()
+	bowlthing.draw(gameDisplay)
+	display.update()
+	for i in range(0, len(meatballSprites)-1):
+		if pygame.sprite.collide_rect(bowl1, meatballArray[i]):
+			score+=meatballScore
+			meatballSprites[i].update("gotToTop")
+	for i in range(0, len(spaghettiSprites)-1):
+		if pygame.sprite.collide_rect(bowl1, spaghettiArray[i]):
+			score+=spaghettiScore
+			spaghettiSprites[i].update("gotToTop")
 	# gameDisplay.blit(meatballs1,(x_pos,y_pos))
 	# gameDisplay.fill(black)
 	# pygame.display.update()		
