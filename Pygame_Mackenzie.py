@@ -36,7 +36,7 @@ maxspaghettis = 5
 score = 0
 maxscore = 500 
 meatballScore = 5
-spaghettiScore = 10
+spaghettiScore = 3
 #create a surface
 gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
 
@@ -61,6 +61,18 @@ class Meatball(Sprite):
 		elif action == "gotToTop":
 			self.rect.x = random.randint(1,WIDTH -20)
 			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+		# for g in meatballArray:
+		# 	if self.rect.colliderect(g):
+		# 		self.rect.x = random.randint(1,WIDTH -20)
+		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+		# for t in spaghettiArray:
+		# 	if self.rect.colliderect(t):
+		# 		self.rect.x = random.randint(1,WIDTH -20)
+		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+		if self.rect.colliderect(bowl1):
+			self.rect.x = random.randint(1,WIDTH -20)
+			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+			global score += meatballScore
 
 
 	def gotToTop(self):
@@ -72,6 +84,7 @@ class Spaghetti(Sprite):
 		Sprite.__init__(self)
 		self.image = image.load("spaghetti.bmp").convert()
 		self.rect = self.image.get_rect()
+		
 
 	def update(self, action):
 		if action == "move down":
@@ -82,6 +95,19 @@ class Spaghetti(Sprite):
 		elif action == "gotToTop":
 			self.rect.x = random.randint(1,WIDTH -20)
 			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+		# for t in spaghettiArray:
+		# 	if self.rect.colliderect(t):
+		# 		self.rect.x = random.randint(1,WIDTH -20)
+		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+		# for g in meatballArray:
+		# 	if self.rect.colliderect(g):
+		# 		self.rect.x = random.randint(1,WIDTH -20)
+		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+		if self.rect.colliderect(bowl1):
+			self.rect.x = random.randint(1,WIDTH -20)
+			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+			global score += spaghettiScore
+
 
 	def gotToTop(self):
 		self.rect.x = random.randint(1,WIDTH -20)
@@ -107,7 +133,6 @@ class Bowl(Sprite):
 		self.image = image.load("bowl.bmp").convert()
 		self.rect = self.image.get_rect()
 		self.rect.y = 450
-		self
 
 	def update(self):
 		self.rect.x = x_pos
@@ -170,6 +195,7 @@ while not gameExit:
 		if pygame.sprite.collide_rect(bowl1, spaghettiArray[i]):
 			score+=spaghettiScore
 			spaghettiSprites[i].update("gotToTop")
+
 	# gameDisplay.blit(meatballs1,(x_pos,y_pos))
 	# gameDisplay.fill(black)
 	# pygame.display.update()		
