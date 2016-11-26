@@ -1,14 +1,16 @@
-#required 
+#required
 from pygame import *
 from pygame.sprite import *
 import pygame
 import random
-pygame.init();
 
 WIDTH = 800
 HEIGHT = 600
 
-screen_height = 800 
+paused = False
+muted = False
+
+screen_height = 800
 
 white = (255,255,255)
 black = (0,0,0)
@@ -16,35 +18,31 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
 
-# x_pos = 0
-# y_pos = 200
-# bg_x = 0
-# bg_y = -200
-# poop_x = random.randrange(0, WIDTH) 
-# poop_y = random.randrange(200, HEIGHT) 
-
 x_pos = 0
 y_pos = 0
-# x_delta = 0
-# y_delta = 0
 clock = pygame.time.Clock()
 
-meatballspeed = 10
+meatballspeed = 1
 maxmeatballs = 5
-spaghettispeed = 10
-maxspaghettis = 5
-score = 0
-maxscore = 500 
 meatballScore = 5
-spaghettiScore = 3
-#create a surface
-gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
 
-#lets add a title, aka "caption"
-display.set_caption("Cloudy with a Chance of Meatballs")
+spaghettispeed = 2
+maxspaghettis = 5
+spaghettiScore = 3
+
+speed = 1
+
+score = 0
+maxscore = 100
+#create a surface
 
 #pygame.display.flip() 		#similar to a flip book, updates entire surface
 # pygame.display.update()		#only updates portion specified
+# this is the play sound function
+def play(soundFile):
+	soundFile = pygame.mixer.Sound(file=soundFile)
+	if not muted:
+		soundFile.play(loops=0)
 
 class Meatball(Sprite):
 	def __init__(self):
@@ -53,6 +51,8 @@ class Meatball(Sprite):
 		self.rect = self.image.get_rect()
 
 	def update(self, action):
+		global score
+		global meatballScore
 		if action == "move down":
 			self.rect.y += meatballspeed
 			if self.rect.y > screen_height:
@@ -61,18 +61,10 @@ class Meatball(Sprite):
 		elif action == "gotToTop":
 			self.rect.x = random.randint(1,WIDTH -20)
 			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-		# for g in meatballArray:
-		# 	if self.rect.colliderect(g):
-		# 		self.rect.x = random.randint(1,WIDTH -20)
-		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-		# for t in spaghettiArray:
-		# 	if self.rect.colliderect(t):
-		# 		self.rect.x = random.randint(1,WIDTH -20)
-		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-		# if self.rect.colliderect(bowl1):
-		# 	self.rect.x = random.randint(1,WIDTH -20)
-		# 	self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-		# 	global score += meatballScore
+		if self.rect.colliderect(bowl1):
+			self.rect.x = random.randint(1,WIDTH -20)
+			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+			score = score + meatballScore
 
 
 	def gotToTop(self):
@@ -84,9 +76,11 @@ class Spaghetti(Sprite):
 		Sprite.__init__(self)
 		self.image = image.load("spaghetti.bmp").convert()
 		self.rect = self.image.get_rect()
-		
+
 
 	def update(self, action):
+		global score
+		global spaghettiScore
 		if action == "move down":
 			self.rect.y += spaghettispeed
 			if self.rect.y > screen_height:
@@ -103,29 +97,15 @@ class Spaghetti(Sprite):
 		# 	if self.rect.colliderect(g):
 		# 		self.rect.x = random.randint(1,WIDTH -20)
 		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-		# if self.rect.colliderect(bowl1):
-		# 	self.rect.x = random.randint(1,WIDTH -20)
-		# 	self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-		# 	global score += spaghettiScore
-
-
+		if self.rect.colliderect(bowl1):
+			self.rect.x = random.randint(1,WIDTH -20)
+			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
+			score = score + spaghettiScore
+			# this is for playing sound
+			# play(file name here ex: 'getPoint.wav')
 	def gotToTop(self):
 		self.rect.x = random.randint(1,WIDTH -20)
 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-
-meatballArray = []
-for i in range(0, maxmeatballs-1):
-	meatballArray.append(Meatball())
-meatballSprites = []
-for x in  range(0, (len(meatballArray)-1)):
-	meatballSprites.append(RenderPlain(meatballArray[x]))
-
-spaghettiArray = []
-for i in range(0, maxspaghettis-1):
-	spaghettiArray.append(Spaghetti())
-spaghettiSprites = []
-for x in range(0, (len(spaghettiArray)-1)):
-	spaghettiSprites.append(RenderPlain(spaghettiArray[x]))
 
 class Bowl(Sprite):
 	def __init__(self):
@@ -140,96 +120,82 @@ class Bowl(Sprite):
 
 	# def hit(self,target):
 	# 	return self.rect.colliderect(target)
-
-
-# bowlthing=RenderPlain(Bowl)
-bowl1 = Bowl()
-
-bowlthing= RenderPlain(bowl1)
-
 init()
+
+gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
+#lets add a title, aka "caption"
+display.set_caption("Cloudy with a Chance of Meatballs")
+
+scoreFont = font.Font(None, 25)
+
+# meatball = Meatball()
+# meatballSprite = RenderPlain(meatball)
+meatballArray = []
+for i in range(0, maxmeatballs-1):
+	meatballArray.append(Meatball())
+meatballSprites = []
+for x in  range(0, (len(meatballArray)-1)):
+	meatballSprites.append(RenderPlain(meatballArray[x]))
+spaghettiArray = []
+for i in range(0, maxspaghettis-1):
+	spaghettiArray.append(Spaghetti())
+spaghettiSprites = []
+for x in range(0, (len(spaghettiArray)-1)):
+	spaghettiSprites.append(RenderPlain(spaghettiArray[x]))
+
+bowl1 = Bowl()
+bowlthing=RenderPlain(bowl1)
 
 gameDisplay.fill(white)
 gameExit = False
+
 while not gameExit:
-	# bowlthing()
+
+	# if score == maxscore:
+	# 	gameExit = True
+	# This sometimes works, and is used to stop the game when you get a max score
+
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			gameExit = True
 	if event.type == pygame.KEYDOWN:
-		# x_pos=;
 		y_pos= 450;
-		if event.key == pygame.K_LEFT:
-			x_pos -= 10
+		if event.key == pygame.K_LEFT or event.key == pygame.K_a: # left key or a key pressed
+			# if you want to be able to pause uncomment the if statement with the other code in it
+			# if not paused:
+			x_pos -= speed
 			# bowlthing.move(-10)
-		if event.key == pygame.K_RIGHT:
-			x_pos += 10
-			# bowlthing.move(10)
-		# if event.key == pygame.K_UP:
-		# 	y_delta -= 10
-		# if event.key == pygame.K_DOWN:
-		# 	y_delta += 10
-		# if event.key == pygame.K_LCTRL:
+		if event.key == pygame.K_RIGHT or event.key == pygame.K_d: # right key or d key pressed
+			# if you want to be able to pause uncomment the if statement with the other code in it
+			# if not paused:
+			x_pos += speed
+		# uncomment this code if you want muting. key m toggles mute
+		# if event.key == pygame.K_m:
+		# 	muted = not muted
+		# un comment the code below this comment to allow pauses. space or p key toggles mute
+		# if event.key == pygame.K_SPACE or event.key == pygame.K_p:
+		# 	paused = not paused
+	# suround all code in this if statement in the while loop under this comment if you want to be able to pause the game but keep display.update() out of the if statement
+	# if not paused:
 	gameDisplay.fill(white)
-	scoreFont = font.Font(None, 25)
 	scoreText = scoreFont.render("Score: "+str(score), False, (0,0,0))
 	gameDisplay.blit(scoreText, (320, 0))
-	# pygame.display.update()	
+	# pygame.display.update()
+	# meatballSprite.update('move down')
+	# meatballSprite.draw(gameDisplay)
 	for i in range(0,len(meatballSprites) -1):
 		meatballSprites[i].update("move down")
 		meatballSprites[i].draw(gameDisplay)
-		display.update()
 	for i in range(0,len(spaghettiSprites) -1):
-		# meatballArray[i].update()
-		# meatballArray[i].draw(gameDisplay)
 		spaghettiSprites[i].update("move down")
 		spaghettiSprites[i].draw(gameDisplay)
-		display.update()
 	bowlthing.update()
 	bowlthing.draw(gameDisplay)
 	display.update()
-	for i in range(0, len(meatballSprites)-1):
-		if pygame.sprite.collide_rect(bowl1, meatballArray[i]):
-			score+=meatballScore
-			meatballSprites[i].update("gotToTop")
-	for i in range(0, len(spaghettiSprites)-1):
-		if pygame.sprite.collide_rect(bowl1, spaghettiArray[i]):
-			score+=spaghettiScore
-			spaghettiSprites[i].update("gotToTop")
 
-	# gameDisplay.blit(meatballs1,(x_pos,y_pos))
-	# gameDisplay.fill(black)
-	# pygame.display.update()		
-	# clock.tick(30)
-
-	# sprites.update()
-	# sprites.draw(gameDisplay)
-	# display.update()
-	# # block.update()
-	# # block.draw(gameDisplay)
-	# meatballs1.draw(gameDisplay)
-	# meatballs1.update()
-#render is for words
-# class meatballs(pygame.sprite.Sprite):
-# 	def _init_(self, x, y)
-
-# gameDisplay.fill(black)
-# pygame.display.update()	
-
-#sounds
-# elif e.type == MOUSEBOTTONDOWN:
-# 	if shovel.hit(gold):
-# 		mixer.sound("yada").play()
-# 		gold.move()
-# 		hits += 1
-
-
-		
-
-#required
 pygame.quit()
 quit()				#exits python
 
 #CURRENT ISSUES
 #1) HOW TO NOT GO OFF SCREEN
-#2) HOW TO ONLY HAVE ONE MEATBALL 
+#2) HOW TO ONLY HAVE ONE MEATBALL
