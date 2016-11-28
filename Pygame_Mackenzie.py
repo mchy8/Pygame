@@ -16,12 +16,6 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
 
-# x_pos = 0
-# y_pos = 200
-# bg_x = 0
-# bg_y = -200
-# poop_x = random.randrange(0, WIDTH) 
-# poop_y = random.randrange(200, HEIGHT) 
 
 x_pos = 0
 y_pos = 0
@@ -138,10 +132,6 @@ class Bowl(Sprite):
 		self.rect.x = x_pos
 		self.rect.y = 450
 
-	# def hit(self,target):
-	# 	return self.rect.colliderect(target)
-
-
 # bowlthing=RenderPlain(Bowl)
 bowl1 = Bowl()
 
@@ -209,14 +199,12 @@ while not gameExit:
 	# # block.draw(gameDisplay)
 	# meatballs1.draw(gameDisplay)
 	# meatballs1.update()
-#render is for words
-# class meatballs(pygame.sprite.Sprite):
-# 	def _init_(self, x, y)
+
 
 # gameDisplay.fill(black)
 # pygame.display.update()	
 
-#sounds
+#sounds--- edit this 
 # elif e.type == MOUSEBOTTONDOWN:
 # 	if shovel.hit(gold):
 # 		mixer.sound("yada").play()
@@ -229,7 +217,4 @@ while not gameExit:
 #required
 pygame.quit()
 quit()				#exits python
-
-#CURRENT ISSUES
-#1) HOW TO NOT GO OFF SCREEN
-#2) HOW TO ONLY HAVE ONE MEATBALL 
+ 

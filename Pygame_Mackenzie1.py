@@ -22,15 +22,15 @@ x_pos = 0
 y_pos = 0
 clock = pygame.time.Clock()
 
-meatballspeed = 1
+meatballspeed = 2
 maxmeatballs = 5
 meatballScore = 5
 
-spaghettispeed = 2
+spaghettispeed = 3
 maxspaghettis = 5
 spaghettiScore = 3
 
-speed = 1
+speed = 5
 
 score = 0
 maxscore = 100
@@ -117,14 +117,17 @@ class Bowl(Sprite):
 	def update(self):
 		self.rect.x = x_pos
 		self.rect.y = 450
+		if self.rect.x < 0:
+			self.rect.x = 0
+		elif self.rect.x > (screenWidth - self.rect.width):
+			self.rect.x = (screenWidth - self.rect.width)
 
-	# def hit(self,target):
-	# 	return self.rect.colliderect(target)
+
 init()
 
 gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
 #lets add a title, aka "caption"
-display.set_caption("Cloudy with a Chance of Meatballs")
+display.set_caption("Cloudy with a Chance of Meatballs: Catch them if you can")
 
 scoreFont = font.Font(None, 25)
 
@@ -196,6 +199,3 @@ while not gameExit:
 pygame.quit()
 quit()				#exits python
 
-#CURRENT ISSUES
-#1) HOW TO NOT GO OFF SCREEN
-#2) HOW TO ONLY HAVE ONE MEATBALL
