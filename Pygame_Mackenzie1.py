@@ -47,7 +47,7 @@ def play(soundFile):
 class Meatball(Sprite):
 	def __init__(self):
 		Sprite.__init__(self)
-		self.image = image.load("meatball.bmp").convert()
+		self.image = image.load("meatball_v2.bmp").convert()
 		self.rect = self.image.get_rect()
 
 	def update(self, action):
@@ -119,8 +119,15 @@ class Bowl(Sprite):
 		self.rect.y = 450
 		if self.rect.x < 0:
 			self.rect.x = 0
-		elif self.rect.x > (screenWidth - self.rect.width):
-			self.rect.x = (screenWidth - self.rect.width)
+		elif self.rect.x > (WIDTH - self.rect.width):
+			self.rect.x = (WIDTH - self.rect.width)
+
+class Background(Sprite):
+    def __init__(self, image_file, location):
+        pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
+        self.image = pygame.image.load("background2.bmp")
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location
 
 
 init()
@@ -130,6 +137,8 @@ gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
 display.set_caption("Cloudy with a Chance of Meatballs: Catch them if you can")
 
 scoreFont = font.Font(None, 25)
+
+BackGround = Background("background2.bmp", [0,0])
 
 # meatball = Meatball()
 # meatballSprite = RenderPlain(meatball)
@@ -181,6 +190,7 @@ while not gameExit:
 	# suround all code in this if statement in the while loop under this comment if you want to be able to pause the game but keep display.update() out of the if statement
 	# if not paused:
 	gameDisplay.fill(white)
+	gameDisplay.blit(BackGround.image, BackGround.rect)
 	scoreText = scoreFont.render("Score: "+str(score), False, (0,0,0))
 	gameDisplay.blit(scoreText, (320, 0))
 	# pygame.display.update()
