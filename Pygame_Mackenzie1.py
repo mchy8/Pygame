@@ -89,14 +89,6 @@ class Spaghetti(Sprite):
 		elif action == "gotToTop":
 			self.rect.x = random.randint(1,WIDTH -20)
 			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-		# for t in spaghettiArray:
-		# 	if self.rect.colliderect(t):
-		# 		self.rect.x = random.randint(1,WIDTH -20)
-		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
-		# for g in meatballArray:
-		# 	if self.rect.colliderect(g):
-		# 		self.rect.x = random.randint(1,WIDTH -20)
-		# 		self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
 		if self.rect.colliderect(bowl1):
 			self.rect.x = random.randint(1,WIDTH -20)
 			self.rect.y = (random.randint(0, HEIGHT-30))*(-1)
