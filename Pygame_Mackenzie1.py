@@ -22,15 +22,15 @@ x_pos = 0
 y_pos = 0
 clock = pygame.time.Clock()
 
-meatballspeed = 2
+meatballspeed = 8
 maxmeatballs = 5
 meatballScore = 5
 
-spaghettispeed = 3
+spaghettispeed = 10
 maxspaghettis = 5
 spaghettiScore = 3
 
-speed = 5
+speed = 10
 
 score = 0
 maxscore = 100
@@ -47,7 +47,7 @@ def play(soundFile):
 class Meatball(Sprite):
 	def __init__(self):
 		Sprite.__init__(self)
-		self.image = image.load("meatball_v2.bmp").convert()
+		self.image = image.load("meatball_v2.bmp").convert_alpha()
 		self.rect = self.image.get_rect()
 
 	def update(self, action):
@@ -74,7 +74,7 @@ class Meatball(Sprite):
 class Spaghetti(Sprite):
 	def __init__(self):
 		Sprite.__init__(self)
-		self.image = image.load("spaghetti.bmp").convert()
+		self.image = image.load("spaghetti_v2.bmp").convert_alpha()
 		self.rect = self.image.get_rect()
 
 
@@ -110,7 +110,7 @@ class Spaghetti(Sprite):
 class Bowl(Sprite):
 	def __init__(self):
 		Sprite.__init__(self)
-		self.image = image.load("bowl.bmp").convert()
+		self.image = image.load("bowl_v2.bmp").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.y = 450
 
@@ -134,7 +134,7 @@ init()
 
 gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
 #lets add a title, aka "caption"
-display.set_caption("Cloudy with a Chance of Meatballs: Catch them if you can")
+display.set_caption("Cloudy with a Chance of Meatballs")
 
 scoreFont = font.Font(None, 25)
 
