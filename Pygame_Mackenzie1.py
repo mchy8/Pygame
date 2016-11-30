@@ -154,7 +154,7 @@ gameDisplay.fill(white)
 gameExit = False
 
 while not gameExit:
-
+#if it collides then make the sound 
 	# if score == maxscore:
 	# 	gameExit = True
 	# This sometimes works, and is used to stop the game when you get a max score
