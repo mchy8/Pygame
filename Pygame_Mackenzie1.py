@@ -1,4 +1,3 @@
-#required
 from pygame import *
 from pygame.sprite import *
 import pygame
@@ -7,8 +6,6 @@ import random
 WIDTH = 800
 HEIGHT = 544
 
-#800
-muted = False
 
 white = (255,255,255)
 black = (0,0,0)
@@ -33,10 +30,6 @@ speed = 10
 score = 0
 maxscore = 100
 
-def play(soundFile):
-	soundFile = pygame.mixer.Sound(file=soundFile)
-	if not muted:
-		soundFile.play(loops=0)
 
 def overlap(Sprite):
 	for x in meatballArray:
@@ -128,6 +121,9 @@ class Background(Sprite):
 
 init()
 #initiates the pygame lib
+mixer.music.load("The_XX.wav")
+mixer.music.play(-1)
+#plays the music in the background
 
 gameDisplay = display.set_mode((WIDTH, HEIGHT)) #initialize with a tuple
 #lets add a title, aka "caption"
