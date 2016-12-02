@@ -130,6 +130,14 @@ class Background(Sprite):
         self.rect.left, self.rect.top = location
         #loads the background photo 
         #this background photo is from Cloudy with a Chance of Meatballs the movie- owned by Sony Pictures Animation, Sony Pictures Imageworks - it does not belong to me
+class Words(Sprite):
+	def __init__(self):
+		Sprite.__init__(self)
+		self.image = image.load("firstscreentext.bmp").convert_alpha()
+		self.rect = self.image.get_rect()
+		self.rect.y = 200
+		self.rect.x = 75
+		#this is for the intro paragraph before the game starts 
 
 
 init()
@@ -168,11 +176,25 @@ for x in range(0, (len(spaghettiArray)-1)):
 bowl1 = Bowl()
 bowlthing=RenderPlain(bowl1)
 #rendering the bowl- only 
+
+wordintro = Words()
+introduction = RenderPlain(wordintro)
 gameDisplay.fill(white)
 #creating it 
 gameExit = False
 
+counter = 0
+title = font.Font(None, 30)
+
 while not gameExit:
+	if counter ==0:
+		TitleText = title.render("CATCH AS MANY FLYING MEATBALLS AND SPAGHETTIS AS YOU CAN!",False,(0,0,0)))
+		introduction.update()
+		introduction.draw(gameDisplay)
+		display.update()
+		pygame.time.delay(7000)
+	counter+=1
+
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			gameExit = True
